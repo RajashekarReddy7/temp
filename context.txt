@@ -1,0 +1,865 @@
+# CHAPTER – 1
+# INTRODUCTION
+
+## 1.1 Purpose of the Project
+
+The purpose of the Intelligent Multi-Agent Patient Interaction and Clinical Support Platform is to develop an intelligent healthcare assistance system that enables patients to understand their symptoms, assess the severity of their health concerns, receive appropriate healthcare guidance, and identify suitable medical specialists through a centralized application.
+
+Traditional healthcare applications primarily focus on providing basic symptom information and general medical assistance. The proposed platform extends these capabilities by integrating Artificial Intelligence, multi-agent coordination, clinical guideline verification, and healthcare navigation.
+
+The main purposes of the project are:
+
+**1.** To provide a centralized platform where patients can describe their symptoms and medical history.
+
+**2.** To extract and analyze patient symptoms using Natural Language Processing (NLP) and Large Language Models (LLMs).
+
+**3.** To assess the severity of health concerns and classify them into Self-Care, Routine Consultation, or Emergency categories.
+
+**4.** To retrieve relevant clinical guideline information using Retrieval-Augmented Generation (RAG) to support healthcare guidance.
+
+**5.** To recommend suitable medical specialties based on the patient's symptoms and assessed health concerns.
+
+**6.** To help patients discover nearby specialists and healthcare facilities using the Google Maps API.
+
+**7.** To generate structured clinical summaries that can assist healthcare professionals during consultations.
+
+**8.** To store patient interaction records and generated clinical summaries using MongoDB.
+
+The overall goal is to transform conventional healthcare assistance into an intelligent and interactive patient-support experience while ensuring that the platform supports, rather than replaces, professional medical judgment.
+
+## 1.2 Problem with Existing Systems
+
+Traditional healthcare applications and medical chatbots provide basic symptom information and healthcare assistance. However, many existing systems have limitations in connecting different healthcare services into a single workflow.
+
+Some major problems with existing systems are:
+
+**1. Limited Symptom Analysis:** Many systems provide general responses and may not extract complete medical information from patient conversations.
+
+**2. Lack of Severity Assessment:** Patients may find it difficult to understand whether their condition requires self-care, routine consultation, or emergency attention.
+
+**3. Limited Clinical Verification:** AI-generated healthcare responses may not always be supported by relevant clinical guidelines.
+
+**4. Lack of Specialty Guidance:** Existing platforms may not directly connect identified symptoms with suitable medical specialties.
+
+**5. Limited Healthcare Discovery:** Patients may need separate applications to find nearby doctors and healthcare facilities.
+
+**6. Lack of Multi-Agent Collaboration:** Many systems depend on a single AI model rather than specialized agents handling different healthcare tasks.
+
+Therefore, an integrated platform is needed to combine patient interaction, symptom analysis, severity assessment, clinical guideline verification, specialty recommendation, and healthcare facility discovery.
+
+## 1.3 Proposed System
+
+The Intelligent Multi-Agent Patient Interaction and Clinical Support Platform is an AI-powered healthcare assistance system that integrates multiple intelligent agents to provide structured and context-aware healthcare guidance.
+
+The system allows patients to communicate through a conversational interface and describe their symptoms and medical history. The collected information is processed using an LLM-based Symptom Extraction Module, which converts the patient's conversation into structured clinical information.
+
+The platform classifies patient conditions into three severity levels:
+
+**1. Self-Care:** Provides general guidance for concerns that may be suitable for self-care, while advising users to seek professional assistance if symptoms persist or worsen.
+
+**2. Routine Consultation:** Recommends consultation with an appropriate healthcare professional for further medical evaluation.
+
+**3. Emergency:** Provides immediate escalation guidance and advises the patient to seek emergency medical attention.
+
+A Retrieval-Augmented Generation (RAG) mechanism retrieves relevant clinical guideline information from ChromaDB to support the generated guidance.
+
+The system also recommends suitable medical specialties based on the identified health concerns and uses the Google Maps API to identify nearby specialists and healthcare facilities.
+
+The entire workflow is managed through LangGraph, which coordinates the specialized agents and manages the flow of information between them.
+
+Finally, the system generates a structured clinical summary and stores patient interaction information in MongoDB.
+
+The proposed platform acts as a clinical decision-support system and does not replace professional medical diagnosis or treatment.
+
+## 1.4 Scope of the Project
+
+The scope of the project is to develop an intelligent healthcare assistance platform that connects initial patient interaction with appropriate healthcare guidance and medical services.
+
+The major areas covered by the project are:
+
+**1. Patient Interaction:** Provides a conversational interface for collecting patient symptoms and medical history.
+
+**2. Symptom Extraction:** Uses an LLM to convert patient conversations into structured clinical information.
+
+**3. Severity Triage:** Classifies health concerns into Self-Care, Routine Consultation, and Emergency categories.
+
+**4. RAG Verification:** Retrieves relevant clinical guideline passages from ChromaDB to support healthcare guidance.
+
+**5. Specialty Recommendation:** Suggests appropriate medical specialties based on the identified health concerns.
+
+**6. Location Discovery:** Uses the Google Maps API to find nearby specialists and healthcare facilities.
+
+**7. Clinical Summary Generation:** Creates structured summaries of patient information and assessment details for healthcare professionals.
+
+**8. Data Management:** Uses MongoDB to store and manage patient interactions and generated summaries.
+
+The platform focuses on initial healthcare assistance, clinical information organization, and healthcare discovery. It does not independently provide a confirmed medical diagnosis or replace consultation with qualified healthcare professionals.
+
+## 1.5 Architecture Diagram
+
+The system follows a layered multi-agent architecture in which different components work together to process patient requests and generate healthcare guidance.
+
+The architecture consists of the following layers:
+
+**1. Presentation Layer**
+
+- Developed using ReactJS and Tailwind CSS.
+- Provides the patient conversational interface.
+- Allows patients to enter symptoms and medical history.
+- Displays healthcare guidance, recommendations, and generated clinical summaries.
+
+**2. API Layer**
+
+- Developed using Python and FastAPI.
+- Handles communication between the frontend and backend.
+- Provides REST API endpoints for processing patient requests.
+- Manages the transfer of information between the application and AI workflow.
+
+**3. Multi-Agent Orchestration Layer**
+
+- Uses LangGraph to coordinate the overall workflow.
+- Contains specialized agents for symptom extraction, severity triage, RAG verification, specialty recommendation, location discovery, and summary generation.
+- Coordinates communication between agents and manages the sequence of processing tasks.
+
+**4. LLM Runtime Layer**
+
+- Uses Ollama to run the Mistral Large Language Model.
+- Supports natural-language understanding and AI-based processing.
+- Helps convert patient descriptions into structured symptom information.
+
+**5. Knowledge and Database Layer**
+
+- ChromaDB stores clinical guideline information for vector-based retrieval.
+- MongoDB stores patient interaction records and generated clinical summaries.
+- Supports information retrieval and data management.
+
+**6. External Service Layer**
+
+- Uses the Google Maps API.
+- Helps identify nearby specialists and healthcare facilities.
+- Provides location-related information to support healthcare discovery.
+
+[INSERT FIGURE 1.1 HERE]
+
+*Figure 1.1: System Architecture of the Proposed Platform*
+
+
+# CHAPTER – 2
+# LITERATURE SURVEY
+
+## 2.1 Introduction
+
+The development of Artificial Intelligence in healthcare has created new opportunities for improving patient interaction, medical information processing, and clinical decision support.
+
+Recent research focuses on using Large Language Models, Natural Language Processing, Retrieval-Augmented Generation, and multi-agent systems to understand medical information and support healthcare-related tasks.
+
+These technologies help systems process natural-language patient queries, retrieve relevant medical knowledge, coordinate specialized tasks, and generate structured responses.
+
+This chapter discusses the major technical research areas and existing approaches related to the development of the proposed platform.
+
+## 2.2 Technical Research Areas
+
+The proposed platform is based on several important technical research areas.
+
+**1. Large Language Models in Healthcare**
+
+Large Language Models are artificial intelligence models capable of understanding and generating human-like text.
+
+In healthcare applications, LLMs can process patient descriptions, extract relevant medical information, summarize conversations, and generate understandable responses.
+
+They help improve natural-language interaction between patients and healthcare systems. However, their outputs must be carefully verified because generated medical information may sometimes be inaccurate or incomplete.
+
+**2. Multi-Agent Systems**
+
+Multi-agent systems consist of multiple specialized agents that work together to complete complex tasks.
+
+Each agent is assigned a specific responsibility, such as symptom extraction, severity assessment, clinical guideline verification, or specialty recommendation.
+
+In the proposed platform, LangGraph coordinates these agents and manages the flow of information between them.
+
+This approach helps divide the overall healthcare assistance process into smaller and more manageable tasks.
+
+**3. Natural Language Processing**
+
+Natural Language Processing enables computers to understand and process human language.
+
+In healthcare applications, NLP can identify symptoms, medical terms, patient concerns, and relevant information from natural-language descriptions.
+
+The proposed platform uses NLP and LLM-based processing to convert patient conversations into structured clinical information.
+
+**4. Retrieval-Augmented Generation**
+
+Retrieval-Augmented Generation combines information retrieval with Large Language Model-based response generation.
+
+It retrieves relevant information from an external knowledge source and provides that information as context to the language model.
+
+The proposed platform uses ChromaDB to store and retrieve relevant clinical guideline information.
+
+The retrieved information supports the generation of more context-aware healthcare guidance.
+
+**5. Clinical Decision Support Systems**
+
+Clinical Decision Support Systems assist healthcare professionals and patients by organizing relevant information and providing decision-support guidance.
+
+These systems can help assess health concerns, identify possible levels of urgency, and provide information that supports further medical evaluation.
+
+The proposed platform incorporates severity triage to classify health concerns into Self-Care, Routine Consultation, and Emergency categories.
+
+**6. Conversational Healthcare Systems**
+
+Conversational healthcare systems allow patients to interact with applications using natural language.
+
+They help collect patient information, understand health-related questions, and provide structured responses.
+
+The proposed platform uses a conversational interface to collect symptoms and medical history before processing the information through specialized agents.
+
+### Related Research Works
+
+The following research works provide relevant background for the proposed platform:
+
+**1. MedAgents: Large Language Models as Collaborators for Zero-shot Medical Reasoning (2024)**
+
+This research explores the collaboration of multiple language-model-based agents for medical reasoning tasks.
+
+It demonstrates the relevance of agent collaboration in handling complex medical information and motivates the use of specialized agents in healthcare workflows.
+
+**2. Agent Hospital (2024)**
+
+This research explores agent-based healthcare environments and interactions.
+
+It provides insights into the use of intelligent agents for healthcare-related tasks and the coordination of different activities in a simulated medical environment.
+
+**3. Almanac (2024)**
+
+This work focuses on grounding language-model responses in external medical knowledge sources.
+
+It highlights the importance of retrieving relevant medical information to support generated responses.
+
+**4. Towards Conversational Diagnostic AI (2024)**
+
+This research explores conversational approaches to diagnostic assistance.
+
+It emphasizes the importance of collecting patient information through structured interactions and understanding medical concerns expressed in natural language.
+
+**5. AgentClinic (2024)**
+
+This research explores agent-based clinical interaction and decision-making.
+
+It provides a foundation for understanding how specialized agents can participate in multi-step healthcare workflows.
+
+**6. MedAgentsBench (2025)**
+
+This work focuses on evaluating the capabilities of medical agents and collaborative medical reasoning.
+
+It provides a benchmark-oriented perspective for assessing the performance of AI agents in healthcare-related tasks.
+
+## 2.3 Research Gap
+
+Existing research demonstrates significant progress in medical language understanding, AI-based clinical reasoning, retrieval-based knowledge systems, and multi-agent collaboration.
+
+However, several limitations and opportunities remain:
+
+**1. Limited End-to-End Patient Support:** Many systems focus on individual medical reasoning tasks rather than providing a complete workflow from patient interaction to healthcare discovery.
+
+**2. Lack of Integrated Healthcare Navigation:** Symptom analysis and healthcare facility discovery are often handled through separate applications or services.
+
+**3. Limited Clinical Grounding:** Language-model-generated responses may contain unsupported information when they are not connected to reliable clinical knowledge sources.
+
+**4. Separated Healthcare Functions:** Symptom extraction, severity assessment, clinical guideline verification, and specialty recommendation are often treated as independent processes.
+
+**5. Limited Structured Clinical Summaries:** Patient conversations may not always be converted into organized summaries that can assist healthcare professionals during consultations.
+
+**6. Need for Coordinated AI Agents:** Complex healthcare assistance workflows require multiple specialized tasks to be performed in a coordinated manner rather than relying entirely on a single general-purpose model.
+
+The proposed platform addresses these opportunities by combining patient interaction, symptom extraction, severity triage, clinical guideline retrieval, specialty recommendation, location discovery, and clinical summary generation through a LangGraph-managed multi-agent architecture.
+
+## 2.4 Conclusion
+
+The literature survey highlights the importance of Artificial Intelligence, Large Language Models, Natural Language Processing, Retrieval-Augmented Generation, and multi-agent systems in healthcare applications.
+
+The reviewed research provides a foundation for developing systems that can understand patient information, retrieve relevant clinical knowledge, coordinate specialized tasks, and support healthcare-related decisions.
+
+Based on the identified research gaps, the proposed platform integrates these technologies into a unified healthcare assistance workflow.
+
+The system aims to improve the organization of patient information and provide structured healthcare guidance while maintaining the importance of professional medical judgment.
+
+
+# CHAPTER – 3
+# SOFTWARE REQUIREMENT SPECIFICATION
+
+## 3.1 Introduction to SRS
+
+A Software Requirements Specification (SRS) is a document that describes the functional and non-functional requirements of a software system.
+
+It defines what the system should do, how it should behave, and the resources required for its development and operation.
+
+The SRS document acts as a reference between developers, project members, and stakeholders during the software development process.
+
+For the Intelligent Multi-Agent Patient Interaction and Clinical Support Platform, the SRS describes the requirements for patient interaction, symptom extraction, severity assessment, clinical guideline verification, specialty recommendation, location discovery, clinical summary generation, and data management.
+
+## 3.2 Role of SRS
+
+The SRS document plays an important role in the development of the proposed platform.
+
+The major roles of the SRS are:
+
+**1. Requirement Identification:** Identifies and documents the functional and non-functional requirements of the system.
+
+**2. Development Guidance:** Provides a clear understanding of the features and expected behavior of the application.
+
+**3. System Design:** Acts as a reference for designing the system architecture, modules, and workflows.
+
+**4. Communication:** Establishes a common understanding of project requirements among team members and stakeholders.
+
+**5. Testing Support:** Provides a basis for preparing test cases and verifying whether the developed system satisfies the specified requirements.
+
+**6. Project Management:** Helps organize the development process by identifying the required software components, hardware resources, and dependencies.
+
+**7. Requirement Validation:** Helps ensure that the final system meets the intended objectives and limitations of the project.
+
+## 3.3 Requirements Specification Document
+
+The proposed platform follows a modular architecture in which different agents and application components perform specific healthcare assistance tasks.
+
+The major modules of the system are:
+
+**1. M1 – Patient Interaction Module**
+
+- Provides the patient-facing interface using ReactJS and Tailwind CSS.
+- Allows patients to enter symptoms and medical history.
+- Communicates with the backend through REST APIs.
+
+**2. M2 – Symptom Extraction Module**
+
+- Processes patient descriptions using Natural Language Processing.
+- Uses the Mistral Large Language Model through Ollama.
+- Converts unstructured patient input into structured symptom information.
+
+**3. M3 – Severity Triage Module**
+
+- Analyzes the extracted symptom information.
+- Classifies health concerns into Self-Care, Routine Consultation, or Emergency categories.
+- Provides the corresponding severity assessment.
+
+**4. M4 – RAG Verification Module**
+
+- Retrieves relevant clinical guideline information.
+- Uses LangChain and ChromaDB for retrieval-based processing.
+- Provides supporting clinical context for healthcare guidance.
+
+**5. M5 – Specialty Recommendation Module**
+
+- Analyzes the identified health concerns and assessment information.
+- Recommends suitable medical specialties.
+- Uses the available clinical context to support recommendations.
+
+**6. M6 – Location Discovery Module**
+
+- Integrates with the Google Maps API.
+- Identifies nearby specialists and healthcare facilities.
+- Provides location-related information to patients.
+
+**7. M7 – Clinical Summary Generation Module**
+
+- Generates structured summaries of patient interactions.
+- Organizes relevant symptoms, medical history, and assessment information.
+- Produces information that can assist healthcare professionals during consultations.
+
+**8. M8 – Data Management Module**
+
+- Uses MongoDB for data storage.
+- Maintains patient interaction records.
+- Stores generated clinical summaries.
+
+### Data Requirements
+
+The platform uses the following categories of information:
+
+**1. Patient Input Data:** Symptoms, medical history, and other information provided by patients.
+
+**2. Clinical Knowledge Data:** Clinical guideline documents used for retrieval and verification through ChromaDB.
+
+**3. Symptom and Specialty Information:** Information used to connect identified health concerns with suitable medical specialties.
+
+**4. Interaction Records:** Patient interaction details and generated summaries stored in MongoDB.
+
+**5. Location Information:** Location-related information obtained through the Google Maps API.
+
+## 3.4 Functional Requirements
+
+Functional requirements describe the operations and services that the proposed platform must provide.
+
+The major functional requirements are:
+
+**1. Patient Interaction:** The system shall provide an interface for patients to enter their symptoms and medical history.
+
+**2. Request Processing:** The system shall send patient information from the frontend to the backend through REST APIs.
+
+**3. Symptom Extraction:** The system shall extract relevant symptom information from natural-language patient descriptions.
+
+**4. Severity Assessment:** The system shall classify health concerns into Self-Care, Routine Consultation, and Emergency categories.
+
+**5. Clinical Guideline Retrieval:** The system shall retrieve relevant clinical guideline information from the ChromaDB knowledge base.
+
+**6. Healthcare Guidance:** The system shall use the available assessment information and retrieved clinical context to support healthcare guidance.
+
+**7. Specialty Recommendation:** The system shall recommend suitable medical specialties based on identified health concerns.
+
+**8. Location Discovery:** The system shall use the Google Maps API to identify nearby specialists and healthcare facilities.
+
+**9. Clinical Summary Generation:** The system shall generate structured summaries containing relevant patient information and assessment details.
+
+**10. Data Storage:** The system shall store patient interaction records and generated clinical summaries in MongoDB.
+
+**11. Result Display:** The system shall display severity assessments, healthcare recommendations, and available summary information through the frontend.
+
+**12. Emergency Guidance:** The system shall provide emergency escalation guidance for concerns classified under the Emergency category.
+
+## 3.5 Non-Functional Requirements
+
+Non-functional requirements describe the quality attributes and operational characteristics of the proposed platform.
+
+The major non-functional requirements are:
+
+**1. Usability:** The application should provide a simple and understandable interface that allows patients to enter information and view results easily.
+
+**2. Reliability:** The system should process valid requests consistently and provide appropriate feedback when processing errors occur.
+
+**3. Performance:** The system should process patient requests within a reasonable time, depending on model inference, database retrieval, and external API response times.
+
+**4. Scalability:** The architecture should support future expansion of the application and its individual processing components.
+
+**5. Maintainability:** The modular design should allow individual agents and services to be modified or updated without affecting unrelated components.
+
+**6. Security:** Patient information should be handled carefully and protected against unauthorized access. Secure communication and appropriate access controls should be applied during deployment.
+
+**7. Accuracy:** The system should use relevant clinical information to support generated healthcare guidance and communicate the limitations of AI-generated assessments.
+
+**8. Availability:** The application should remain accessible when the required backend services, databases, LLM runtime, and external APIs are available.
+
+**9. Interoperability:** The system should support communication between the frontend, backend, AI agents, databases, and external services through their defined interfaces.
+
+## 3.6 Performance Requirements
+
+Performance requirements define how efficiently the proposed platform should process patient requests and provide results.
+
+The major performance requirements are:
+
+**1. Response Time:** The system should provide patient responses within a reasonable time under the available computing resources.
+
+**2. Symptom Processing:** The symptom extraction module should process patient descriptions and return structured information efficiently.
+
+**3. Agent Coordination:** LangGraph should coordinate the specialized agents without unnecessary processing delays.
+
+**4. Knowledge Retrieval:** ChromaDB should retrieve relevant clinical guideline passages efficiently.
+
+**5. Data Storage:** MongoDB should store and retrieve patient interaction records and generated summaries reliably.
+
+**6. External API Communication:** The location discovery module should communicate with the Google Maps API and process the returned location information.
+
+**7. Error Handling:** The system should handle failures from the LLM runtime, databases, and external services without causing uncontrolled application failures.
+
+The actual response time and throughput depend on the model configuration, hardware resources, network conditions, and external service availability. Numerical performance targets should be established through implementation testing.
+
+## 3.7 Software Requirements
+
+The software requirements describe the technologies, frameworks, and tools required to develop and operate the proposed platform.
+
+The major software requirements are:
+
+**1. ReactJS:** Used to develop the patient-facing frontend interface.
+
+**2. Tailwind CSS:** Used for designing and styling the application's user interface.
+
+**3. Python:** Used as the primary backend programming language.
+
+**4. FastAPI:** Used to develop backend services and REST API endpoints.
+
+**5. LangGraph:** Used to coordinate the multi-agent workflow and manage communication between specialized agents.
+
+**6. LangChain:** Used to support language-model and retrieval-related components.
+
+**7. Ollama:** Used as the runtime environment for executing the Mistral Large Language Model.
+
+**8. Mistral Large Language Model:** Used for natural-language understanding and symptom information extraction.
+
+**9. ChromaDB:** Used as the vector database for storing and retrieving clinical guideline information.
+
+**10. MongoDB:** Used to store patient interaction records and generated clinical summaries.
+
+**11. Google Maps API:** Used for locating nearby specialists and healthcare facilities.
+
+## 3.8 Hardware Requirements
+
+The hardware requirements describe the physical resources needed to develop, execute, and test the proposed platform.
+
+The major hardware requirements are:
+
+**1. Processor:** A modern multi-core processor capable of running the frontend, backend, database services, and AI components.
+
+**2. RAM:** Sufficient memory to execute the operating system, development tools, databases, and local LLM runtime. Additional memory may be required depending on the selected model.
+
+**3. Storage:** Adequate storage space for source code, software dependencies, clinical guideline documents, vector database information, and MongoDB records.
+
+**4. Network Connectivity:** A stable internet connection for accessing external services such as the Google Maps API and downloading required software components.
+
+**5. Display:** A compatible display device for application development, testing, and patient-interface interaction.
+
+The exact hardware configuration depends on the selected Mistral model, deployment environment, and expected workload.
+
+
+# CHAPTER – 4
+# SYSTEM DESIGN
+
+## 4.1 Introduction to UML
+
+Unified Modeling Language (UML) is a standard visual modeling language used to represent the structure and behavior of software systems.
+
+It provides a graphical way to describe system components, interactions, workflows, and relationships.
+
+UML diagrams help developers and stakeholders understand the design of a software system before and during implementation.
+
+In the proposed platform, UML diagrams are used to represent patient interactions, communication between system components, the behavior of the multi-agent workflow, deployment architecture, and data relationships.
+
+## 4.2 UML Diagrams
+
+The proposed platform uses different UML diagrams to describe its architecture and workflow.
+
+The major diagrams included in the system design are:
+
+- Use Case Diagram
+- Sequence Diagram
+- State Chart Diagram
+- Deployment Diagram
+- Entity Relationship Diagram
+
+## 4.2.1 Use Case Diagram
+
+A Use Case Diagram represents the interaction between external users and the functionalities provided by a system.
+
+It identifies the actors involved in the system and the operations they can perform.
+
+In the proposed platform, the Patient is the primary actor who interacts with the application by providing symptoms and medical history.
+
+The Healthcare Provider represents the professional who may use the generated clinical summary and relevant patient information during consultation, subject to the access functionality implemented in the application.
+
+### Actors
+
+**1. Patient:** The primary user who enters symptoms and medical history and views the healthcare guidance, severity assessment, and recommendations.
+
+**2. Healthcare Provider:** A healthcare professional who can use the structured clinical summary and relevant patient information during consultation where such access is provided.
+
+### Major Use Cases
+
+**1. Describe Symptoms and Medical History:** Allows patients to enter their health concerns and relevant medical information.
+
+**2. Extract Symptoms:** Processes patient input and identifies relevant symptom information.
+
+**3. Assess Severity:** Evaluates the identified health concerns and classifies their severity.
+
+**4. Verify Clinical Guidelines:** Retrieves relevant clinical guideline information to support the assessment.
+
+**5. Recommend Medical Specialty:** Identifies suitable medical specialties based on the patient's health concerns.
+
+**6. Find Nearby Specialists:** Helps patients discover nearby specialists and healthcare facilities.
+
+**7. Generate Clinical Summary:** Creates a structured summary of patient information and assessment details.
+
+**8. Store Patient Records:** Stores patient interaction information and generated summaries.
+
+[INSERT FIGURE 4.1 HERE]
+
+*Figure 4.1: Use Case Diagram*
+
+## 4.2.2 Sequence Diagram
+
+A Sequence Diagram represents the interaction between different system components in chronological order.
+
+It shows how messages are exchanged between participants during the execution of a particular operation.
+
+In the proposed platform, the sequence diagram describes how patient information moves through the frontend, backend, multi-agent orchestrator, language model, databases, and external services.
+
+### Sequence of Operations
+
+**1. Patient Input:** The patient enters symptoms and medical history through the ReactJS frontend.
+
+**2. Frontend Request:** The ReactJS application sends the patient information to the FastAPI backend.
+
+**3. Backend Processing:** FastAPI receives the request and forwards it to the LangGraph orchestrator.
+
+**4. Symptom Extraction:** LangGraph invokes the Symptom Extraction Agent to identify relevant medical information.
+
+**5. LLM Processing:** The Symptom Extraction Agent communicates with the Mistral Large Language Model through Ollama.
+
+**6. Structured Information:** The model returns structured symptom information for further processing.
+
+**7. Severity Assessment:** The Severity Triage Agent evaluates the extracted information and classifies the health concern.
+
+**8. Clinical Guideline Retrieval:** The RAG Verification Agent retrieves relevant clinical guideline information from ChromaDB.
+
+**9. Specialty Recommendation:** The Specialty Recommendation Agent identifies a suitable medical specialty.
+
+**10. Location Discovery:** The Location Discovery Agent communicates with the Google Maps API to identify nearby healthcare facilities.
+
+**11. Clinical Summary:** The Clinical Summary Generation Agent generates a structured summary of the patient interaction and assessment.
+
+**12. Data Storage:** MongoDB stores the patient interaction records and generated clinical summary.
+
+**13. Result Delivery:** FastAPI returns the available assessment and recommendation information to the ReactJS frontend.
+
+**14. Result Display:** The frontend displays the final healthcare guidance and available information to the patient.
+
+[INSERT FIGURE 4.2 HERE]
+
+*Figure 4.2: Sequence Diagram*
+
+## 4.2.3 State Chart Diagram
+
+A State Chart Diagram represents the different states of a system or object and the transitions that occur between those states.
+
+It describes how the system changes its state in response to events or conditions.
+
+In the proposed platform, the State Chart Diagram represents the different stages involved in processing a patient's healthcare request.
+
+### Major States
+
+**1. Initial State:** The system is ready to receive a patient request.
+
+**2. Patient Input State:** The patient enters symptoms and medical history through the conversational interface.
+
+**3. Processing State:** The system receives the patient information and begins processing the request.
+
+**4. Symptom Extraction State:** The LLM-based component extracts relevant symptom information.
+
+**5. Severity Assessment State:** The system evaluates the extracted information and determines the severity category.
+
+**6. Clinical Verification State:** The system retrieves relevant clinical guideline information using the RAG mechanism.
+
+**7. Recommendation State:** The system identifies suitable medical specialties and healthcare guidance.
+
+**8. Location Discovery State:** The system retrieves nearby specialist and healthcare facility information through the Google Maps API.
+
+**9. Summary Generation State:** The system generates a structured clinical summary.
+
+**10. Data Storage State:** Patient interaction information and generated summaries are stored in MongoDB.
+
+**11. Result Display State:** The system displays the assessment and recommendations through the frontend.
+
+**12. Final State:** The processing workflow is completed.
+
+The system transitions between these states according to the successful completion of each processing stage. If an error occurs during processing, the application should handle the failure and provide appropriate feedback.
+
+[INSERT FIGURE 4.3 HERE]
+
+*Figure 4.3: State Chart Diagram*
+
+## 4.2.4 Deployment Diagram
+
+A Deployment Diagram represents the physical arrangement of hardware nodes, software components, and communication paths in a system.
+
+It describes where the application components are deployed and how they communicate with one another.
+
+In the proposed platform, the deployment architecture consists of the following major components:
+
+**1. Patient Device**
+
+- Contains a web browser.
+- Runs the ReactJS frontend.
+- Uses Tailwind CSS for interface styling.
+- Allows patients to interact with the application.
+
+**2. Application Server**
+
+- Runs the Python FastAPI backend.
+- Provides REST API endpoints.
+- Receives and processes frontend requests.
+- Communicates with the AI orchestration components.
+
+**3. AI Orchestration Server**
+
+- Runs the LangGraph workflow.
+- Coordinates the specialized agents.
+- Uses LangChain for language-model and retrieval-related processing.
+
+**4. LLM Runtime**
+
+- Uses Ollama to execute the Mistral Large Language Model.
+- Processes natural-language patient descriptions.
+- Supports symptom extraction and related AI operations.
+
+**5. Knowledge and Database Server**
+
+- Uses ChromaDB for clinical guideline retrieval.
+- Uses MongoDB for storing patient interactions and generated clinical summaries.
+
+**6. External Service**
+
+- Integrates with the Google Maps API.
+- Provides location information for nearby specialists and healthcare facilities.
+
+The components communicate through their defined application interfaces and service connections to complete the patient healthcare assistance workflow.
+
+[INSERT FIGURE 4.4 HERE]
+
+*Figure 4.4: Deployment Diagram*
+
+## 4.2.5 Entity Relationship Diagram
+
+An Entity Relationship Diagram (ER Diagram) represents the major data entities in a system and the relationships between them.
+
+It helps describe how information is logically organized and connected within the application.
+
+The proposed platform handles patient information, interaction records, symptom assessments, clinical guideline references, specialty recommendations, healthcare facility information, and clinical summaries.
+
+### Major Entities and Attributes
+
+**1. PATIENT**
+
+- Patient_ID – Primary Key
+- Name
+- Age
+- Gender
+- Contact_Information
+
+**2. INTERACTION**
+
+- Interaction_ID – Primary Key
+- Patient_ID – Foreign Key
+- Symptoms
+- Medical_History
+- Interaction_Date
+
+**3. SYMPTOM_ASSESSMENT**
+
+- Assessment_ID – Primary Key
+- Interaction_ID – Foreign Key
+- Extracted_Symptoms
+- Severity_Level
+- Assessment_Result
+
+**4. CLINICAL_GUIDELINE**
+
+- Guideline_ID – Primary Key
+- Guideline_Title
+- Guideline_Content
+- Source
+
+**5. SPECIALTY_RECOMMENDATION**
+
+- Recommendation_ID – Primary Key
+- Assessment_ID – Foreign Key
+- Specialty_Name
+- Recommendation_Details
+
+**6. HEALTHCARE_FACILITY**
+
+- Facility_ID – Primary Key
+- Recommendation_ID – Foreign Key
+- Facility_Name
+- Address
+- Location
+
+**7. CLINICAL_SUMMARY**
+
+- Summary_ID – Primary Key
+- Interaction_ID – Foreign Key
+- Summary_Content
+- Generated_Date
+
+### Relationships Between Entities
+
+**1. Patient and Interaction:** One patient can have multiple interaction records (1:N).
+
+**2. Interaction and Symptom Assessment:** One interaction can be associated with one or more symptom assessments (1:N).
+
+**3. Interaction and Clinical Summary:** One interaction can generate one clinical summary (1:1).
+
+**4. Symptom Assessment and Specialty Recommendation:** One symptom assessment can produce multiple specialty recommendations (1:N).
+
+**5. Specialty Recommendation and Healthcare Facility:** One specialty recommendation can identify multiple healthcare facilities (1:N).
+
+**6. Clinical Guideline and Symptom Assessment:** Clinical guideline information can support multiple symptom assessments, and an assessment may use multiple guideline references (M:N).
+
+The ER diagram represents the logical data relationships of the platform. Since MongoDB is a document-oriented database, the actual implementation may use embedded documents, references, or a combination of both instead of traditional relational tables.
+
+[INSERT FIGURE 4.5 HERE]
+
+*Figure 4.5: Entity Relationship Diagram*
+
+## 4.3 TECHNOLOGIES USED
+
+The proposed platform uses several modern technologies, frameworks, and tools to implement its frontend, backend, AI processing, data storage, and external service integration.
+
+The major technologies used are:
+
+**1. ReactJS**
+
+ReactJS is a JavaScript library used for building interactive user interfaces. It is used to develop the patient-facing interface of the proposed platform.
+
+**2. Tailwind CSS**
+
+Tailwind CSS is a utility-first CSS framework used to design and style the application's user interface. It helps maintain consistent styling and responsive layouts.
+
+**3. Python**
+
+Python is used as the primary backend programming language. It supports backend development and integration of AI-related components.
+
+**4. FastAPI**
+
+FastAPI is a Python web framework used to develop backend services and REST API endpoints. It handles communication between the frontend and backend processing components.
+
+**5. LangGraph**
+
+LangGraph is used to coordinate the multi-agent workflow. It manages the execution and communication of specialized agents involved in patient interaction and healthcare assistance.
+
+**6. LangChain**
+
+LangChain supports the integration of language models and retrieval-based components. It is used in the RAG-related processing workflow.
+
+**7. Ollama**
+
+Ollama provides the runtime environment for executing the Mistral Large Language Model. It supports local model execution and AI-based natural-language processing.
+
+**8. Mistral Large Language Model**
+
+The Mistral Large Language Model is used for understanding patient descriptions and extracting relevant symptom information from natural-language input.
+
+**9. ChromaDB**
+
+ChromaDB is a vector database used to store and retrieve clinical guideline information. It supports semantic search and retrieval of relevant medical knowledge.
+
+**10. MongoDB**
+
+MongoDB is a NoSQL database used to store patient interaction records and generated clinical summaries.
+
+**11. Google Maps API**
+
+The Google Maps API is used to support location discovery by identifying nearby specialists and healthcare facilities.
+
+# REFERENCES
+
+1. MedAgents: Large Language Models as Collaborators for Zero-shot Medical Reasoning (2024).
+
+2. MedAgentsBench (2025).
+
+3. Agent Hospital (2024).
+
+4. Almanac (2024).
+
+5. Towards Conversational Diagnostic AI (2024).
+
+6. AgentClinic (2024).
+
+7. LangGraph Documentation.
+
+8. LangChain Documentation.
+
+9. ChromaDB Documentation.
+
+10. FastAPI Documentation.
+
+11. MongoDB Documentation.
+
+12. Ollama Documentation.
+
+13. Google Maps Platform Documentation.
